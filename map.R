@@ -62,13 +62,14 @@ breaks <- c(4, 5, 6, 7, 8, 9, 11, 15)
 
 # Plot the map
 
+png(filename="eu_unemployment.png")
 mapplot <- plot(eu_nuts2, col = my_colours[findInterval(eu_nuts2@data$unemployment, breaks, all.inside=TRUE)],
                 axes=FALSE, border = NA, xlim=c(-1406961, 3208068), ylim=c(4205243, 11221112),
                 main=paste0("Unemployment rate (%) in ", year))
 mapplot <- plot(country_borders, add = TRUE)
 mapplot <- legend(x = -2706961, 8730220, legend = leglabs(round(breaks, digits=2), between = "to "),
                fill = my_colours, bty="n", cex=0.7)
-
+dev.off()
 
 # Barplot on the side
 
