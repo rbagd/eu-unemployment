@@ -57,18 +57,18 @@ eu_nuts2 <- eu_sp[eu_sp@data$STAT_LEVL_ == 2,]
 
 eu_nuts2@data <- data.frame(eu_nuts2@data,
                          unemployment=map_data[match(eu_nuts2@data[, "NUTS_ID"], map_data$GEO), "obsValue"])
-my_colours <- brewer.pal(7, "RdPu")
-breaks <- c(4, 5, 6, 7, 8, 9, 11, 15)
+my_colours <- brewer.pal(8, "RdPu")
+breaks <- c(4, 5, 6, 7, 8, 9, 11, 15, 20)
 
 # Plot the map
 
-png(filename="eu_unemployment.png")
+png(filename="eu_unemployment.png", width=800, height=600)
 mapplot <- plot(eu_nuts2, col = my_colours[findInterval(eu_nuts2@data$unemployment, breaks, all.inside=TRUE)],
                 axes=FALSE, xlim=c(-1406961, 3208068), ylim=c(4205243, 11221112), border="grey", lwd=0.5,
                 main=paste0("Unemployment rate (%) in ", year))
 mapplot <- plot(country_borders, add = TRUE, lwd=0.5)
 mapplot <- legend(x = -2706961, 8730220, legend = leglabs(round(breaks, digits=2), between = "to "),
-               fill = my_colours, bty="n", cex=0.8)
+               fill = my_colours, bty="n", cex=1, x.intersp=0.5, y.intersp=1)
 dev.off()
 
 # Barplot on the side
