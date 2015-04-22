@@ -25,25 +25,33 @@ shinyServer(function(input, output) {
   
   
   output$mapplot <- renderPlot ({ 
+ 
     map_data <- head(data[,c(2, as.numeric(input$month))], -1)
-    
-    if (input$capita == TRUE) { map_data[,2] <- 1000000*map_data[,2] / head(data$population, -1) }
-    
-    be_nuts2@data <- data.frame(eu_nuts2@data,
-                                faillites=map_data[match(eu_nuts2@data[, "NUTS_ID"], map_data$NUTS_ID), 2])
     my_colours <- brewer.pal(8, "RdPu")
     breaks <- c(4, 50, 60, 70, 80, 90, 110, 150, 200)
+    title <- "Nombre de faillites"
+    if (input$capita == TRUE)
+    {
+      map_data[,2] <- 100000*map_data[,2] / head(data$population, -1)
+      breaks <- breaks / 10
+      title <- paste0(title, " par 100000 habitants")
+    }
     
-  mapplot <- plot(be_nuts2, col = my_colours[findInterval(be_nuts2@data$faillites, breaks, all.inside=TRUE)],
+    be_nuts2@data <- data.frame(eu_nuts2@data,
+                                faillites=map_data[match(eu_nuts2@data[, "NUTS_ID"],
+                                                         map_data$NUTS_ID), 2])
+    
+  mapplot <- plot(be_nuts2, col = my_colours[findInterval(be_nuts2@data$faillites,
+                                                          breaks, all.inside=TRUE)],
                   axes=FALSE, xlim=c(275436, 745853), ylim=c(6364866, 6739279),
-                  border="grey", lwd=0.5, main="Faillites")
+                  border="grey", lwd=0.5, main=title)
   mapplot <- legend(x = 70961, 6737220, legend = leglabs(round(breaks, digits=2), between = "to "),
                     fill = my_colours, bty="n", cex=0.8, x.intersp=0.5, y.intersp=0.9)
   })
   
   output$summary <- renderTable ({
     
-    data[,c(1, as.numeric(input$month), 16)]  
+    data.frame(data[,c(1, input$month, 16)], parhab=1e5*data[,input$month]/data$population)
     
   })
   
