@@ -9,6 +9,7 @@ provinces <- gsub("Province de |Province d'|Région ", "", data[,1])
 
 library(rgdal)
 library(sp)
+library(rgeos)
 library(RColorBrewer)
 library(maptools)
 
