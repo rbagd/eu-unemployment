@@ -35,7 +35,7 @@ library(sp)
 library(RColorBrewer)
 library(maptools)
 
-year <- 2013
+year <- 2014
 map_data <- subset(df_data[[1]], obsTime == year)
 
 # Get map file from Eurostat (@ EuroGeographics), unpack it and put shapefiles current working directory
